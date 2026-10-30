@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="LedgerLens AI financial reconciliation dashboard."
+    >
+
+    <title>LedgerLens AI</title>
+
+  <link rel="stylesheet" href="./styles.css?v=4">
+</head>
+
+<body>
+    <header class="topbar">
+        <a
+            class="brand"
+            href="/dashboard/"
+            aria-label="LedgerLens home"
+        >
+            <span class="brand-mark" aria-hidden="true">L</span>
+
+            <span>
+                <strong>LedgerLens</strong>
+                <small>AI reconciliation workspace</small>
+            </span>
+        </a>
+
+        <div
+            id="api-status"
+            class="status status-checking"
+            role="status"
+            aria-live="polite"
+        >
+            <span
+                class="status-dot"
+                aria-hidden="true"
+            ></span>
+
+            <span id="api-status-text">
+                Checking API
+            </span>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">
+                    FINANCIAL OPERATIONS
+                </p>
+
+                <h1>
+                    Reconcile invoices, payments and bank transactions.
+                </h1>
+
+                <p class="hero-description">
+                    Deterministic matching handles clear records first.
+                    AI reviews uncertain cases while keeping final approval
+                    under human control.
+                </p>
+
+                <div class="hero-actions">
+                    <button
+                        id="check-connection-button"
+                        class="button button-primary"
+                        type="button"
+                    >
+                        Check backend connection
+                    </button>
+
+                    <a
+                        class="button button-secondary"
+                        href="/docs"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        Open API documentation
+                    </a>
+                </div>
+            </div>
+
+            <aside class="principles-card">
+                <p class="card-label">
+                    CONTROL MODEL
+                </p>
+
+                <h2>
+                    AI assists. People approve.
+                </h2>
+
+                <ul>
+                    <li>
+                        Exact matches remain deterministic
+                    </li>
+
+                    <li>
+                        Uncertain cases receive structured review
+                    </li>
+
+                    <li>
+                        AI confidence never exceeds 95
+                    </li>
+
+                    <li>
+                        Every AI recommendation requires human review
+                    </li>
+                </ul>
+            </aside>
+        </section>
+
+        <section
+            class="workspace"
+            aria-labelledby="workspace-heading"
+        >
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">
+                        WORKSPACE
+                    </p>
+
+                    <h2 id="workspace-heading">
+                        New reconciliation
+                    </h2>
+                </div>
+
+                <span class="phase-badge">
+                    Upload workflow active
+                </span>
+            </div>
+
+            <form
+                id="reconciliation-form"
+                class="reconciliation-form"
+                novalidate
+            >
+                <div class="upload-grid">
+                    <section class="upload-card">
+                        <div class="upload-card-heading">
+                            <span class="step-number">
+                                01
+                            </span>
+
+                            <span class="required-label">
+                                Required
+                            </span>
+                        </div>
+
+                        <h3>
+                            Invoice dataset
+                        </h3>
+
+                        <p>
+                            Upload the invoice records that need
+                            reconciliation.
+                        </p>
+
+                        <input
+    id="invoices-file"
+    class="native-file-input"
+    name="invoices_file"
+    type="file"
+    accept=".csv,text/csv"
+    required
+>
+
+                        <div
+                            id="invoices-file-status"
+                            class="file-status"
+                            role="status"
+                        >
+                            No file selected
+                        </div>
+                    </section>
+
+                    <section class="upload-card">
+                        <div class="upload-card-heading">
+                            <span class="step-number">
+                                02
+                            </span>
+
+                            <span class="required-label">
+                                Required
+                            </span>
+                        </div>
+
+                        <h3>
+                            Payment dataset
+                        </h3>
+
+                        <p>
+                            Upload the payment records received from
+                            customers.
+                        </p>
+
+                        <input
+    id="payments-file"
+    class="native-file-input"
+    name="payments_file"
+    type="file"
+    accept=".csv,text/csv"
+    required
+>
+
+                        <div
+                            id="payments-file-status"
+                            class="file-status"
+                            role="status"
+                        >
+                            No file selected
+                        </div>
+                    </section>
+
+                    <section class="upload-card">
+                        <div class="upload-card-heading">
+                            <span class="step-number">
+                                03
+                            </span>
+
+                            <span class="required-label">
+                                Required
+                            </span>
+                        </div>
+
+                        <h3>
+                            Bank transactions
+                        </h3>
+
+                        <p>
+                            Upload the bank transaction export used for
+                            matching.
+                        </p>
+
+                        <input
+    id="bank-transactions-file"
+    class="native-file-input"
+    name="bank_transactions_file"
+    type="file"
+    accept=".csv,text/csv"
+    required
+>
+
+                        <div
+                            id="bank-transactions-file-status"
+                            class="file-status"
+                            role="status"
+                        >
+                            No file selected
+                        </div>
+                    </section>
+                </div>
+
+                <section class="provider-panel">
+                    <div>
+                        <p class="eyebrow">
+                            ANALYSIS PROVIDER
+                        </p>
+
+                        <h3>
+                            Choose the AI review mode
+                        </h3>
+
+                        <p class="provider-description">
+                            Deterministic reconciliation runs first in both
+                            modes. Only uncertain cases are sent for AI
+                            review.
+                        </p>
+                    </div>
+
+                    <div class="provider-field">
+                        <label for="provider-select">
+                            Provider
+                        </label>
+
+                        <select
+                            id="provider-select"
+                            name="provider"
+                        >
+                            <option value="mock">
+                                Mock AI — deterministic demo
+                            </option>
+
+                            <option value="groq">
+                                Groq — live AI analysis
+                            </option>
+                        </select>
+
+                        <small id="provider-help">
+                            Mock mode requires no API key and produces
+                            repeatable decisions.
+                        </small>
+                    </div>
+                </section>
+
+                <div class="form-actions">
+                    <button
+                        id="run-reconciliation-button"
+                        class="button button-primary button-large"
+                        type="submit"
+                        disabled
+                    >
+                        Run reconciliation
+                    </button>
+
+                    <button
+                        id="reset-form-button"
+                        class="button button-secondary"
+                        type="button"
+                    >
+                        Clear files
+                    </button>
+                </div>
+
+                <div
+                    id="run-status"
+                    class="run-status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Select all three CSV files to continue.
+                </div>
+            </form>
+        </section>
+<section
+    id="import-mapping-section"
+    class="import-mapping-section"
+    aria-labelledby="import-mapping-heading"
+    hidden
+>
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">
+                REAL-DATA IMPORT
+            </p>
+
+            <h2 id="import-mapping-heading">
+                Review CSV column mappings
+            </h2>
+
+            <p>
+                LedgerLens checks each uploaded file and suggests how
+                its columns correspond to the required reconciliation
+                fields.
+            </p>
+        </div>
+    </div>
+
+    <div class="mapping-card-list">
+        <details
+            id="invoices-mapping-card"
+            class="mapping-card"
+            open
+        >
+            <summary>
+                <span>Invoices mapping</span>
+
+                <span
+                    id="invoices-mapping-summary-status"
+                    class="mapping-summary-status"
+                >
+                    Waiting for file
+                </span>
+            </summary>
+
+            <div class="mapping-card-content">
+                <div class="import-meta-grid">
+                    <div>
+                        <span>File</span>
+                        <strong id="invoices-preview-filename">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Rows</span>
+                        <strong id="invoices-preview-rows">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Columns</span>
+                        <strong id="invoices-preview-columns">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Delimiter</span>
+                        <strong id="invoices-preview-delimiter">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Encoding</span>
+                        <strong id="invoices-preview-encoding">—</strong>
+                    </div>
+                </div>
+
+                <div
+                    id="invoices-preview-warnings"
+                    class="import-warning-list"
+                    hidden
+                ></div>
+
+                <div
+                    id="invoices-mapping-status"
+                    class="mapping-readiness"
+                >
+                    Select an invoices CSV to generate suggestions.
+                </div>
+
+                <div class="mapping-table-wrapper">
+                    <table class="mapping-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    LedgerLens field
+                                </th>
+
+                                <th scope="col">
+                                    Requirement
+                                </th>
+
+                                <th scope="col">
+                                    Source CSV column
+                                </th>
+
+                                <th scope="col">
+                                    Confidence
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="invoices-mapping-body">
+                            <tr>
+                                <td
+                                    colspan="4"
+                                    class="empty-table-message"
+                                >
+                                    No invoices preview available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="preview-table-heading">
+                    Data preview
+                </h3>
+
+                <div class="preview-table-wrapper">
+                    <table class="data-preview-table">
+                        <thead id="invoices-preview-head"></thead>
+
+                        <tbody id="invoices-preview-body">
+                            <tr>
+                                <td class="empty-table-message">
+                                    No preview rows available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+
+        <details
+            id="payments-mapping-card"
+            class="mapping-card"
+        >
+            <summary>
+                <span>Payments mapping</span>
+
+                <span
+                    id="payments-mapping-summary-status"
+                    class="mapping-summary-status"
+                >
+                    Waiting for file
+                </span>
+            </summary>
+
+            <div class="mapping-card-content">
+                <div class="import-meta-grid">
+                    <div>
+                        <span>File</span>
+                        <strong id="payments-preview-filename">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Rows</span>
+                        <strong id="payments-preview-rows">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Columns</span>
+                        <strong id="payments-preview-columns">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Delimiter</span>
+                        <strong id="payments-preview-delimiter">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Encoding</span>
+                        <strong id="payments-preview-encoding">—</strong>
+                    </div>
+                </div>
+
+                <div
+                    id="payments-preview-warnings"
+                    class="import-warning-list"
+                    hidden
+                ></div>
+
+                <div
+                    id="payments-mapping-status"
+                    class="mapping-readiness"
+                >
+                    Select a payments CSV to generate suggestions.
+                </div>
+
+                <div class="mapping-table-wrapper">
+                    <table class="mapping-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    LedgerLens field
+                                </th>
+
+                                <th scope="col">
+                                    Requirement
+                                </th>
+
+                                <th scope="col">
+                                    Source CSV column
+                                </th>
+
+                                <th scope="col">
+                                    Confidence
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="payments-mapping-body">
+                            <tr>
+                                <td
+                                    colspan="4"
+                                    class="empty-table-message"
+                                >
+                                    No payments preview available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="preview-table-heading">
+                    Data preview
+                </h3>
+
+                <div class="preview-table-wrapper">
+                    <table class="data-preview-table">
+                        <thead id="payments-preview-head"></thead>
+
+                        <tbody id="payments-preview-body">
+                            <tr>
+                                <td class="empty-table-message">
+                                    No preview rows available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+
+        <details
+            id="bank-transactions-mapping-card"
+            class="mapping-card"
+        >
+            <summary>
+                <span>Bank transactions mapping</span>
+
+                <span
+                    id="bank-transactions-mapping-summary-status"
+                    class="mapping-summary-status"
+                >
+                    Waiting for file
+                </span>
+            </summary>
+
+            <div class="mapping-card-content">
+                <div class="import-meta-grid">
+                    <div>
+                        <span>File</span>
+                        <strong id="bank-transactions-preview-filename">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Rows</span>
+                        <strong id="bank-transactions-preview-rows">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Columns</span>
+                        <strong id="bank-transactions-preview-columns">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Delimiter</span>
+                        <strong id="bank-transactions-preview-delimiter">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Encoding</span>
+                        <strong id="bank-transactions-preview-encoding">—</strong>
+                    </div>
+                </div>
+
+                <div
+                    id="bank-transactions-preview-warnings"
+                    class="import-warning-list"
+                    hidden
+                ></div>
+
+                <div
+                    id="bank-transactions-mapping-status"
+                    class="mapping-readiness"
+                >
+                    Select a bank-transactions CSV to generate suggestions.
+                </div>
+
+                <div class="mapping-table-wrapper">
+                    <table class="mapping-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    LedgerLens field
+                                </th>
+
+                                <th scope="col">
+                                    Requirement
+                                </th>
+
+                                <th scope="col">
+                                    Source CSV column
+                                </th>
+
+                                <th scope="col">
+                                    Confidence
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="bank-transactions-mapping-body">
+                            <tr>
+                                <td
+                                    colspan="4"
+                                    class="empty-table-message"
+                                >
+                                    No bank-transactions preview available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="preview-table-heading">
+                    Data preview
+                </h3>
+
+                <div class="preview-table-wrapper">
+                    <table class="data-preview-table">
+                        <thead id="bank-transactions-preview-head"></thead>
+
+                        <tbody id="bank-transactions-preview-body">
+                            <tr>
+                                <td class="empty-table-message">
+                                    No preview rows available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+    </div>
+</section>
+        <section
+            id="results-panel"
+            class="results-panel"
+            aria-labelledby="results-heading"
+            hidden
+        >
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">
+                        RECONCILIATION OUTPUT
+                    </p>
+
+                    <h2 id="results-heading">
+                        Results
+                    </h2>
+                </div>
+
+                <span
+                    id="result-provider-badge"
+                    class="phase-badge"
+                >
+                    Provider
+                </span>
+            </div>
+
+            <div class="summary-grid">
+                <article class="summary-card">
+                    <span class="summary-label">
+                        Total invoices
+                    </span>
+
+                    <strong id="summary-total">
+                        0
+                    </strong>
+                </article>
+
+                <article class="summary-card summary-confirmed">
+                    <span class="summary-label">
+                        Confirmed
+                    </span>
+
+                    <strong id="summary-confirmed">
+                        0
+                    </strong>
+                </article>
+
+                <article class="summary-card summary-review">
+                    <span class="summary-label">
+                        Review
+                    </span>
+
+                    <strong id="summary-review">
+                        0
+                    </strong>
+                </article>
+
+                <article class="summary-card summary-duplicate">
+                    <span class="summary-label">
+                        Duplicate review
+                    </span>
+
+                    <strong id="summary-duplicate">
+                        0
+                    </strong>
+                </article>
+
+                <article class="summary-card summary-unmatched">
+                    <span class="summary-label">
+                        Unmatched
+                    </span>
+
+                    <strong id="summary-unmatched">
+                        0
+                    </strong>
+                </article>
+
+                <article class="summary-card summary-ai">
+                    <span class="summary-label">
+                        AI candidates
+                    </span>
+
+                    <strong id="summary-ai-candidates">
+                        0
+                    </strong>
+                </article>
+            </div>
+
+            <div class="result-information">
+                <div>
+                    <span class="result-information-label">
+                        Analysis mode
+                    </span>
+
+                    <strong id="result-analysis-mode">
+                        —
+                    </strong>
+                </div>
+
+                <div>
+                    <span class="result-information-label">
+                        Model
+                    </span>
+
+                    <strong id="result-model-name">
+                        —
+                    </strong>
+                </div>
+
+                <div>
+                    <span class="result-information-label">
+                        Human review
+                    </span>
+
+                    <strong>
+                        Required for all AI recommendations
+                    </strong>
+                </div>
+            </div>
+<section
+    class="review-section"
+    aria-labelledby="review-table-heading"
+>
+    <div class="review-section-heading">
+        <div>
+            <p class="eyebrow">
+                RECORD REVIEW
+            </p>
+
+            <h3 id="review-table-heading">
+                Invoice-level reconciliation
+            </h3>
+        </div>
+
+        <div class="review-controls">
+            <label for="status-filter">
+                Filter status
+            </label>
+
+            <select id="status-filter">
+                <option value="all">
+                    All records
+                </option>
+
+                <option value="confirmed">
+                    Confirmed
+                </option>
+
+                <option value="review">
+                    Review
+                </option>
+
+                <option value="duplicate_review">
+                    Duplicate review
+                </option>
+
+                <option value="unmatched">
+                    Unmatched
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="review-table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Invoice
+                    </th>
+
+                    <th scope="col">
+                        Status
+                    </th>
+
+                    <th scope="col">
+                        Confidence
+                    </th>
+
+                    <th scope="col">
+                        Payment
+                    </th>
+
+                    <th scope="col">
+                        Bank transaction
+                    </th>
+
+                    <th scope="col">
+                        Match method
+                    </th>
+
+                    <th scope="col">
+                        AI recommendation
+                    </th>
+
+                    <th scope="col">
+                        Details
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody id="review-table-body">
+                <tr>
+                    <td
+                        colspan="8"
+                        class="empty-table-message"
+                    >
+                        Run reconciliation to view invoice-level results.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<dialog
+    id="review-dialog"
+    class="review-dialog"
+    aria-labelledby="dialog-title"
+>
+    <div class="review-dialog-content">
+        <header class="review-dialog-header">
+            <div>
+                <p class="eyebrow">
+                    RECONCILIATION RECORD
+                </p>
+
+                <h2 id="dialog-title">
+                    Invoice details
+                </h2>
+            </div>
+
+            <button
+                id="review-dialog-close"
+                class="dialog-close-button"
+                type="button"
+                aria-label="Close invoice details"
+            >
+                ×
+            </button>
+        </header>
+
+        <div class="dialog-summary-grid">
+            <div>
+                <span class="dialog-label">
+                    Invoice
+                </span>
+
+                <strong id="detail-invoice-id">
+                    —
+                </strong>
+            </div>
+
+            <div>
+                <span class="dialog-label">
+                    Status
+                </span>
+
+                <strong id="detail-status">
+                    —
+                </strong>
+            </div>
+
+            <div>
+                <span class="dialog-label">
+                    Deterministic confidence
+                </span>
+
+                <strong id="detail-confidence">
+                    —
+                </strong>
+            </div>
+
+            <div>
+                <span class="dialog-label">
+                    Match method
+                </span>
+
+                <strong id="detail-method">
+                    —
+                </strong>
+            </div>
+        </div>
+
+        <section class="dialog-section">
+            <h3>
+                Matched records
+            </h3>
+
+            <dl class="dialog-definition-list">
+                <div>
+                    <dt>
+                        Payment IDs
+                    </dt>
+
+                    <dd id="detail-payments">
+                        —
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>
+                        Bank transaction IDs
+                    </dt>
+
+                    <dd id="detail-transactions">
+                        —
+                    </dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="dialog-section">
+            <h3>
+                Deterministic assessment
+            </h3>
+
+            <p id="detail-deterministic-explanation">
+                —
+            </p>
+
+            <dl class="dialog-definition-list">
+                <div>
+                    <dt>
+                        Supporting signals
+                    </dt>
+
+                    <dd id="detail-supporting-signals">
+                        —
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>
+                        Conflicts
+                    </dt>
+
+                    <dd id="detail-conflicts">
+                        —
+                    </dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="dialog-section dialog-ai-section">
+            <h3>
+                AI review
+            </h3>
+
+            <dl class="dialog-definition-list">
+                <div>
+                    <dt>
+                        Recommendation
+                    </dt>
+
+                    <dd id="detail-ai-recommendation">
+                        —
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>
+                        AI confidence
+                    </dt>
+
+                    <dd id="detail-ai-confidence">
+                        —
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>
+                        Human review
+                    </dt>
+
+                    <dd id="detail-human-review">
+                        —
+                    </dd>
+                </div>
+            </dl>
+
+            <p id="detail-ai-explanation">
+                —
+            </p>
+        </section>
+    </div>
+</dialog>
+            <details class="raw-details">
+                <summary>
+                    View raw API response
+                </summary>
+
+                <pre id="raw-response"></pre>
+            </details>
+        </section>
+
+        <section
+            id="connection-panel"
+            class="connection-panel"
+            aria-labelledby="connection-heading"
+        >
+            <div>
+                <p class="eyebrow">
+                    SYSTEM STATUS
+                </p>
+
+                <h2 id="connection-heading">
+                    Backend connection
+                </h2>
+            </div>
+
+            <div
+                id="connection-result"
+                class="connection-result"
+            >
+                Waiting for the health check.
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span>
+            LedgerLens AI
+        </span>
+
+        <span>
+            Human-controlled financial reconciliation
+        </span>
+    </footer>
+
+<script src="./app.js?v=6"></script>
+</body>
+</html>
+<script src="./app.js?v=8"></script>

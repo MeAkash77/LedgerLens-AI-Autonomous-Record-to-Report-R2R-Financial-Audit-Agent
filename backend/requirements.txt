@@ -1,0 +1,8 @@
+fastapi[standard]
+pandas
+python-dotenv
+pydantic-settings
+pytest
+httpx
+openai
+groq
