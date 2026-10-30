@@ -243,7 +243,7 @@ ledgerlens-ai/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/abuzarabbas/ledgerlens-ai.git
+git clone https://github.com/MeAkash77/LedgerLens-AI-Autonomous-Record-to-Report-R2R-Financial-Audit-Agent.git
 cd ledgerlens-ai
 ```
 
