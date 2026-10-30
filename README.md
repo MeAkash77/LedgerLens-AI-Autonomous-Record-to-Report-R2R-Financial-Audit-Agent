@@ -1,6 +1,6 @@
 [![Backend Tests](https://github.com/abuzarabbas/ledgerlens-ai/actions/workflows/backend-tests.yml/badge.svg)](https://github.com/abuzarabbas/ledgerlens-ai/actions/workflows/backend-tests.yml)
 
-[Live Demo](https://ledgerlens-ai.onrender.com) · [API Documentation](https://ledgerlens-ai.onrender.com/docs) · [Source Code](https://github.com/abuzarabbas/ledgerlens-ai)
+[Live Demo](https://ledgerlens-ai-autonomous-record-to.onrender.com/dashboard/) · [API Documentation](https://ledgerlens-ai-autonomous-record-to.onrender.com/docs)
 
 > The public Render service may take several seconds to wake after inactivity.
 
